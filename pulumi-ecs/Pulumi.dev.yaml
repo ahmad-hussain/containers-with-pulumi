@@ -1,0 +1,5 @@
+config:
+  aws:region: us-west-2
+  my-container-service:containerPort: "80"
+  my-container-service:cpu: "512"
+  my-container-service:memory: "128"
