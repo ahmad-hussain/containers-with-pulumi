@@ -9,15 +9,22 @@ Tagging resources on AWS is also something I never really paid as much attention
 
 Overall I think the solution(s) I provided are far from ideal and definitely not perfect (and might not even work if actually applied and resources created) but it was a good learning experience nonetheless, and taught me a good bit more about pulumi. 
 
+## Updates:
+Updated the ECS deploy to use a custom VPC and configured a secuirty group to allow http access to the fargate service on ECS.
+
 # Deployments
 there exists both `pulumi-ecs` and `pulumi-eks` folders in which all the Pulumi deployments are. I decided to have both for the sake of learning more about Pulumi since this was a good opportunity to look into both since I was learning about container orchestration infrastructure with Pulumi for this assessment anyway. As usual, `pulumi up` should do everything in one fell swoop when in either of the folders. 
 
 It is worth noting that I did not try to actually run and create the resources for these out of fear of incurring costs on AWS, though `pulumi preview` runs as expected with no errors.
 
+
 # Diagram
 ![Arch diagram](diagram.png "Architecture")
 
 This is a fairly basic-ish diagram outlining the infrastructure at play here in the ECS case. A user accesses the load balancer endpoint, which points to the EC2 'fargate' instance, which is inside the ECS cluster, inside this instance we have a task running which comprises of the web and api containers, where port 80 of the web container is exposed. These containers are defined in the task definition, where the images of the containers are pulled from the respective ECR repositories. 
+
+## Update with custom VPC for the ECS deploy:
+similar to the original diagram except the services and load balancer are contained within the VPC, and a NAT gateway allows things within the VPC to be accessed by the outside world.
 
 The EKS case is very similar except everything is inside a defined VPC, and the cluster would instead have EC2 instances as nodes, and inside the nodes you would have the api and web pods (there are also replica pods), where inside these pods the container is running. The web pod would be accessible to the outside (though a nat gateway is also required) but the pod with the api container would just communicate within the cluster.
 
