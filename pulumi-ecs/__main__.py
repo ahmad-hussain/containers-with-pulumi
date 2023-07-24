@@ -76,7 +76,7 @@ cluster = aws.ecs.Cluster("cluster", tags={
 })
 
 # An ALB to serve the container endpoint to the internet, specify the security group
-loadbalancer = awsx.lb.ApplicationLoadBalancer("loadbalancer", security_groups = [allow_all_http_inbound_sg.id], tags={
+loadbalancer = awsx.lb.ApplicationLoadBalancer("loadbalancer", subnet_ids = vpc.public_subnet_ids, security_groups = [allow_all_http_inbound_sg.id], tags={
     "Environment": "Prod",
     "Name": "WeatherLoadBalancer",
     "ResourceType": "ALB",

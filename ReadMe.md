@@ -12,6 +12,14 @@ Overall I think the solution(s) I provided are far from ideal and definitely not
 ## Updates:
 Updated the ECS deploy to use a custom VPC and configured a secuirty group to allow http access to the fargate service on ECS.
 
+There are some other things I would consider looking into further but trying to timebox myself for this task since going into a rabbithole of other things can be costly. IAM roles should be dealt with by pulumi for the service but creating custom IAM roles might be beneficial for other resources to restrict access within aws. 
+Seperating the api and ui into seperate tasks might also be beneficial in the name of uptime and making thigs easier to work with in the future, say a db needs to be added for whatever reason, then having the api and ui as seperate deployed services on ECS would give more granularity and make it easier to just configure the api deploy. (I do not know off the top of my head the networking required to have the api and ui as seperate services on ECS which is why I left it as a single service. Something something 'service discovery' I would need to look into more. Internal load balancing would also be a part of this if we are involving replicas).
+Would also consider moving from fargate to ec2 for costs, preformance, and customisability.
+Using aws crosswalk again for the vpc creation, going the long way would also involve manually creating route tables and network acls and more fun things. (not that this cannot be done with the crosswalk version of vpc)
+
+Added an extra tag on the resource type. Again, not sure what exactly what tags should be added to resources for best practices.
+
+
 # Deployments
 there exists both `pulumi-ecs` and `pulumi-eks` folders in which all the Pulumi deployments are. I decided to have both for the sake of learning more about Pulumi since this was a good opportunity to look into both since I was learning about container orchestration infrastructure with Pulumi for this assessment anyway. As usual, `pulumi up` should do everything in one fell swoop when in either of the folders. 
 
